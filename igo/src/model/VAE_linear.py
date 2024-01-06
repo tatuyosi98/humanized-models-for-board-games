@@ -21,6 +21,7 @@ from typing import Tuple
 rng = np.random.RandomState(1234)
 random_state = 42
 device = "mps" if torch.backends.mps.is_available() else "cpu"
+# device = "cpu"
 
 
 def torch_log(x: torch.Tensor) -> torch.Tensor:
@@ -114,6 +115,8 @@ class VAE_linear(nn.Module):
         x = F.relu(self.dense_dec2(x))
         # 出力が0~1になるようにsigmoid
         x = torch.sigmoid(self.dense_dec3(x))
+        # ヘビサイド
+        # x = torch.heaviside(self.dense_dec3(x), torch.tensor([0.0]).to(device))
         x = x.view(-1, 2, 19, 19) 
 
         return x
