@@ -22,7 +22,7 @@ def make_input_features(board, features):
     # 入力特徴量を0に初期化
     features.fill(0)
 
-    # 盤上の駒（歩，と，香，成香，桂，成桂，銀，成銀，金，角，馬，飛，竜，玉）*2 = 28
+    # 盤上の駒（歩，と，香，成香，桂，成桂，銀，成銀，角，馬，飛，竜，金，玉）*2 = 28
     if board.turn == BLACK:
         board.piece_planes(features)
         pieces_in_hand = board.pieces_in_hand
@@ -127,15 +127,15 @@ def feature_to_sfen(feature):
     for color in COLORS:
         for hand_piece_i, hand_piece_symbol in enumerate(HAND_PIECE_SYMBOLS):
             for piece_i in range(MAX_PIECES_IN_HAND[hand_piece_i]):
-                if int(feature[piece_feature_index][0][0] == 1):
+                if int(feature[piece_feature_index][0][0]) == 1:
                     if color == BLACK:
                         hand_piece_list.append(hand_piece_symbol.upper())
                     elif color == WHITE:
                         hand_piece_list.append(hand_piece_symbol)
                 piece_feature_index += 1
     from pprint import pprint
-    pprint(board_string_list)
-    print(hand_piece_list)
+    # pprint(board_string_list)
+    # print(hand_piece_list)
 
     for board_string_row in board_string_list:
         none_cnt = 0
@@ -155,8 +155,14 @@ def feature_to_sfen(feature):
     sfen = sfen.rstrip("/") + " b "
     if len(hand_piece_list) == 0:
         sfen += "-"
-    for hand_piece in hand_piece_list:
-        sfen += hand_piece
+    # for hand_piece in hand_piece_list:
+    #     sfen += hand_piece
+    else:
+        for hand_piece in sorted(set(hand_piece_list)):
+            if hand_piece_list.count(hand_piece) == 1:
+                sfen += hand_piece
+            else:
+                sfen +=  str(hand_piece_list.count(hand_piece)) + hand_piece
     sfen += " 1"
     print(sfen)
 
