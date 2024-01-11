@@ -78,7 +78,8 @@ def visualize_board_at_move(game, move_number):
     return 0
 
 
-def visualize_matrix(black_matrix, white_matrix, board_size=19):
+
+def visualize_matrix(black_matrix, white_matrix, figname=None, board_size=19):
     fig, ax = plt.subplots()
     ax.set_aspect('equal', adjustable='box')
 
@@ -104,7 +105,9 @@ def visualize_matrix(black_matrix, white_matrix, board_size=19):
             elif white_matrix[y][x] == 1:
                 ax.plot(x, y, 'o', color='white', markeredgecolor='black', markersize=stone_size)
 
-    plt.show()
+    if figname is not None: plt.savefig(f'figures/{figname}.png')
+    plt.close()
+
     return 0
 
 
